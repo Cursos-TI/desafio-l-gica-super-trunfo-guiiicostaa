@@ -1,0 +1,143 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definição da estrutura para representar uma carta
+typedef struct {
+    char estado;            // Estado (A - H)
+    char codigo[4];         // Código da carta (ex: "A01")
+    char cidade[50];        // Nome da cidade
+    int populacao;          // População
+    float area;             // Área
+    float pib;              // PIB
+    int pontosTuristicos;   // Número de pontos turísticos
+} Carta;
+
+// Função para realizar o cadastro de uma carta
+void cadastroCarta(Carta *carta, int numCarta) {
+    printf("Cadastro da Carta %d:\n", numCarta);
+    
+    // Limpa o buffer antes de ler um caractere
+    printf("Digite o estado (A - H): ");
+    scanf(" %c", &carta->estado);
+    
+    printf("Digite o codigo da carta (ex: A01): ");
+    scanf("%s", carta->codigo);
+    
+    // Usar " %[^\n]" permite ler nomes com espaços
+    printf("Digite o nome da cidade: ");
+    scanf(" %[^\n]", carta->cidade);
+    
+    printf("Digite a populacao: ");
+    scanf("%d", &carta->populacao);
+    
+    printf("Digite a area: ");
+    scanf("%f", &carta->area);
+    
+    printf("Digite o PIB: ");
+    scanf("%f", &carta->pib);
+    
+    printf("Digite o numero de pontos turisticos: ");
+    scanf("%d", &carta->pontosTuristicos);
+    
+    printf("\n");
+}
+
+// Função para exibir os dados de uma carta
+void exibirCarta(Carta carta) {
+    printf("Estado: %c\n", carta.estado);
+    printf("Codigo: %s\n", carta.codigo);
+    printf("Cidade: %s\n", carta.cidade);
+    printf("Populacao: %d\n", carta.populacao);
+    printf("Area: %.2f\n", carta.area);
+    printf("PIB: %.2f\n", carta.pib);
+    printf("Pontos Turisticos: %d\n", carta.pontosTuristicos);
+}
+
+// Função para comparar duas cartas com base em um atributo escolhido
+void compararCartas(Carta c1, Carta c2) {
+    int opcao;
+    
+    printf("Escolha o atributo para comparacao:\n");
+    printf("1. Populacao (maior vence)\n");
+    printf("2. Area (maior vence)\n");
+    printf("3. PIB (maior vence)\n");
+    printf("4. Numero de pontos turisticos (maior vence)\n");
+    printf("5. Densidade populacional (menor vence)\n");
+    printf("Digite sua opcao: ");
+    scanf("%d", &opcao);
+    
+    switch(opcao) {
+        case 1:
+            if(c1.populacao > c2.populacao)
+                printf("\nCarta %s vence por Populacao!\n", c1.codigo);
+            else if(c2.populacao > c1.populacao)
+                printf("\nCarta %s vence por Populacao!\n", c2.codigo);
+            else
+                printf("\nEmpate em Populacao!\n");
+            break;
+            
+        case 2:
+            if(c1.area > c2.area)
+                printf("\nCarta %s vence por Area!\n", c1.codigo);
+            else if(c2.area > c1.area)
+                printf("\nCarta %s vence por Area!\n", c2.codigo);
+            else
+                printf("\nEmpate em Area!\n");
+            break;
+            
+        case 3:
+            if(c1.pib > c2.pib)
+                printf("\nCarta %s vence por PIB!\n", c1.codigo);
+            else if(c2.pib > c1.pib)
+                printf("\nCarta %s vence por PIB!\n", c2.codigo);
+            else
+                printf("\nEmpate em PIB!\n");
+            break;
+            
+        case 4:
+            if(c1.pontosTuristicos > c2.pontosTuristicos)
+                printf("\nCarta %s vence por Numero de Pontos Turisticos!\n", c1.codigo);
+            else if(c2.pontosTuristicos > c1.pontosTuristicos)
+                printf("\nCarta %s vence por Numero de Pontos Turisticos!\n", c2.codigo);
+            else
+                printf("\nEmpate no Numero de Pontos Turisticos!\n");
+            break;
+            
+        case 5: {
+            // Cálculo da densidade populacional: populacao / area
+            float densidade1 = c1.area != 0 ? c1.populacao / c1.area : 0;
+            float densidade2 = c2.area != 0 ? c2.populacao / c2.area : 0;
+            
+            if(densidade1 < densidade2)
+                printf("\nCarta %s vence por Densidade Populacional (menor vence)!\n", c1.codigo);
+            else if(densidade2 < densidade1)
+                printf("\nCarta %s vence por Densidade Populacional (menor vence)!\n", c2.codigo);
+            else
+                printf("\nEmpate em Densidade Populacional!\n");
+            break;
+        }
+        default:
+            printf("\nOpcao invalida.\n");
+            break;
+    }
+}
+
+int main() {
+    Carta carta1, carta2;
+    
+    // Cadastro interativo das cartas
+    cadastroCarta(&carta1, 1);
+    cadastroCarta(&carta2, 2);
+    
+    // Exibição organizada dos dados cadastrados
+    printf("--- Dados da Carta 1 ---\n");
+    exibirCarta(carta1);
+    
+    printf("\n--- Dados da Carta 2 ---\n");
+    exibirCarta(carta2);
+    
+    // Comparação das cartas com base no atributo escolhido pelo jogador
+    compararCartas(carta1, carta2);
+    
+    return 0;
+}
